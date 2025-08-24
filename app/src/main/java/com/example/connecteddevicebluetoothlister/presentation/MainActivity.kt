@@ -41,10 +41,11 @@ class MainActivity : ComponentActivity() {
 
         setTheme(android.R.style.Theme_DeviceDefault)
 
-        setContent {
-            WearApp("Android")
-        }
+        getBatteryLevel()
+    }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
+    fun getBatteryLevel() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 1)
 
         val bAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -57,7 +58,10 @@ class MainActivity : ComponentActivity() {
             if (pairedDevices.size > 0) {
                 for (device in pairedDevices) {
                     val batteryLevel = device.javaClass.getMethod("getBatteryLevel").invoke(device) as Int
-                    Toast.makeText(this, device.name + " " + batteryLevel, Toast.LENGTH_LONG).show()
+
+                    setContent {
+                        WearApp(device.name + " " + batteryLevel)
+                    }
                 }
             }
         }
