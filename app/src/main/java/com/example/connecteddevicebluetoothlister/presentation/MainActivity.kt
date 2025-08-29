@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
 
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     fun getBatteryLevel() {
-        println("called")
         var batteryLevels = ""
         val bAdapter = BluetoothAdapter.getDefaultAdapter()
         // Checks if Bluetooth Adapter is present
@@ -46,7 +45,7 @@ class MainActivity : ComponentActivity() {
             if (pairedDevices.isNotEmpty()) {
                 for (device in pairedDevices) {
                     val batteryLevel = device.javaClass.getMethod("getBatteryLevel").invoke(device) as Int
-                    batteryLevels = batteryLevels + "device.name: " + device.name + " battery.level: " + batteryLevel + ", "
+                    batteryLevels = batteryLevels + "device.name: " + device.name + " battery.level: ~ " + batteryLevel + " %, "
                 }
             } else {
                 batteryLevels = "No paired devices found."
